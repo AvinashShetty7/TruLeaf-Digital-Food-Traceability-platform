@@ -8,11 +8,27 @@ import User from "../models/User.model.js";
  * Route: POST /api/product/create
  * Access: Manufacturer only
  */
+import QRCode from "qrcode";
+
 const createProduct = async (req, res) => {
   try {
-    const { name, rawMaterials, quantity, unit, expiryDate } = req.body;
+    const {
+      name,
+      description,
+      category,
+      batchNumber,
+      manufacturingLocation,
+      rawMaterials,
+      quantity,
+      unit,
+      expiryDate,
+      productionDate,
+    } = req.body;
 
-    // 1️⃣ Validate fields
+    console.log(description,"ffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    
+
+    // 1️⃣ Basic validation
     if (!name || !rawMaterials || !quantity || !req.file) {
       return res.status(400).json({
         success: false,
@@ -20,11 +36,12 @@ const createProduct = async (req, res) => {
       });
     }
 
-    // 2️⃣ Parse rawMaterials (it may come as JSON string)
+    // Parse raw materials
     const parsedMaterials =
       typeof rawMaterials === "string"
         ? JSON.parse(rawMaterials)
         : rawMaterials;
+    console.log(parsedMaterials, "xxxxxxxxxxxx");
 
     if (!Array.isArray(parsedMaterials) || parsedMaterials.length === 0) {
       return res.status(400).json({
@@ -33,40 +50,112 @@ const createProduct = async (req, res) => {
       });
     }
 
-    // 3️⃣ Check all raw materials exist
+    // 2️⃣ Validate manufacturer (from token)
+    const manufacturer = await User.findById("691a0664cee641dce9ba2a2e").select(
+      "name email phone role"
+    );
+
+    if (!manufacturer) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Manufacturer",
+      });
+    }
+
+    // 3️⃣ Fetch & validate raw materials
     const validMaterials = await RawMaterial.find({
       _id: { $in: parsedMaterials },
-      status: { $ne: "expired" },
-    });
+      manufacturer: "691a0664cee641dce9ba2a2e", // must belong to manufacturer
+      status: "sold", // manufacturer reserved these raws
+      expiryDate: { $gte: new Date() }, // not expired
+    }).populate("farmer", "name phone");
+
+    console.log(validMaterials);
 
     if (validMaterials.length !== parsedMaterials.length) {
       return res.status(400).json({
         success: false,
-        message: "One or more raw materials are invalid or expired.",
+        message:
+          "Some raw materials are invalid, expired, or not reserved for this manufacturer.",
       });
     }
 
-    // 4️⃣ Construct product
+    // 4️⃣ Build consumedRawDetails snapshot
+    const consumedRawDetails = validMaterials.map((rm) => ({
+      rawMaterialId: rm._id,
+      batchCode: rm.batchCode,
+      name: rm.name,
+      quantityUsed: rm.quantity, // manufacturer used full raw quantity
+      unit: rm.unit,
+      harvestDate: rm.harvestDate,
+      farmer: {
+        farmerId: rm.farmer._id,
+        name: rm.farmer.name,
+        phone: rm.farmer.phone,
+      },
+    }));
+    
+    
+    
+    // 5️⃣ Create product
     const newProduct = new Product({
       name,
-      manufacturer: req.user._id,
+      description,
+      category,
+      batchNumber,
+      manufacturingLocation,
+      manufacturer: "691a0664cee641dce9ba2a2e",
       rawMaterials: parsedMaterials,
+      consumedRawDetails,
       quantity,
       unit,
-      imageUrl: req.file.path, // from upload middleware
+      imageUrl: req.file.path,
+      productionDate,
       expiryDate,
       status: "created",
-      traceHistory: [
-        {
-          status: "created",
-          updatedBy: req.user._id,
-        },
-      ],
     });
+    console.log(',mmmmmmmmmmmmmmmmmmmmmmmmmmmmmuuuuuuuuuuuuuuuuuuu');
+    
+    console.log(newProduct);
+    
+    await newProduct.save();
+
+    // 6️⃣ Create QR payload
+    const qrPayload = {
+      productId: newProduct._id,
+      productCode: newProduct.productCode,
+      traceUrl: `${process.env.FRONTEND_URL}/trace/${newProduct._id}`,
+
+      productDetails: {
+        name: newProduct.name,
+        description: newProduct.description,
+        category: newProduct.category,
+        batchNumber: newProduct.batchNumber,
+        manufacturingLocation: newProduct.manufacturingLocation,
+        quantity: newProduct.quantity,
+        unit: newProduct.unit,
+        expiryDate: newProduct.expiryDate,
+        imageUrl: newProduct.imageUrl,
+      },
+
+      manufacturerDetails: {
+        name: manufacturer.name,
+        email: manufacturer.email,
+        phone: manufacturer.phone,
+      },
+
+      rawMaterialsUsed: consumedRawDetails,
+    };
+
+    // 7️⃣ Generate QR Image (Base64)
+    const qrImage = await QRCode.toDataURL(JSON.stringify(qrPayload));
+
+    newProduct.qrCode = qrImage;
+    newProduct.qrTracePayload = qrPayload;
 
     await newProduct.save();
 
-    // 5️⃣ Update raw materials’ status to “consumed”
+    // 8️⃣ Mark raw materials as consumed
     await RawMaterial.updateMany(
       { _id: { $in: parsedMaterials } },
       { $set: { status: "consumed" } }
@@ -74,11 +163,11 @@ const createProduct = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "✅ Product created successfully!",
+      message: "Product created successfully with QR Code",
       product: newProduct,
     });
   } catch (error) {
-    console.error("❌ Error creating product:", error);
+    console.error("Error creating product:", error);
     res.status(500).json({
       success: false,
       message: "Server error while creating product",
@@ -363,86 +452,83 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-
-
 /**
  * ✅ Public Product Traceability View
  * Route: GET /api/product/trace/:productCode
  * Access: Public (No authentication required)
  */
- const getProductTrace = async (req, res) => {
-  try {
-    const { productCode } = req.params;
+// const getProductTrace = async (req, res) => {
+//   try {
+//     const { productCode } = req.params;
 
-    // 1️⃣ Find product by productCode
-    const product = await Product.findOne({ productCode })
-      .populate("manufacturer", "name email role")
-      .populate({
-        path: "rawMaterials",
-        select: "name batchCode qualityGrade status farmer",
-        populate: {
-          path: "farmer",
-          select: "name email role",
-          model: User,
-        },
-      })
-      .populate("traceHistory.updatedBy", "name role")
-      .lean();
+//     // 1️⃣ Find product by productCode
+//     const product = await Product.findOne({ productCode })
+//       .populate("manufacturer", "name email role")
+//       .populate({
+//         path: "rawMaterials",
+//         select: "name batchCode qualityGrade status farmer",
+//         populate: {
+//           path: "farmer",
+//           select: "name email role",
+//           model: User,
+//         },
+//       })
+//       .populate("traceHistory.updatedBy", "name role")
+//       .lean();
 
-    if (!product) {
-      return res
-        .status(404)
-        .json({ success: false, message: "❌ Product not found." });
-    }
+//     if (!product) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "❌ Product not found." });
+//     }
 
-    // 2️⃣ Prepare public trace response
-    const traceData = {
-      name: product.name,
-      productCode: product.productCode,
-      status: product.status,
-      quantity: product.quantity,
-      unit: product.unit,
-      manufacturer: {
-        name: product.manufacturer?.name,
-        email: product.manufacturer?.email,
-      },
-      rawMaterials: product.rawMaterials?.map((rm) => ({
-        name: rm.name,
-        batchCode: rm.batchCode,
-        qualityGrade: rm.qualityGrade,
-        status: rm.status,
-        farmer: {
-          name: rm.farmer?.name,
-          email: rm.farmer?.email,
-        },
-      })),
-      traceHistory: product.traceHistory?.map((h) => ({
-        status: h.status,
-        updatedBy: h.updatedBy?.name || "System",
-        role: h.updatedBy?.role || "-",
-        timestamp: h.timestamp,
-      })),
-      productionDate: product.productionDate,
-      expiryDate: product.expiryDate,
-      imageUrl: product.imageUrl,
-      qrCode: product.qrCode,
-    };
+//     // 2️⃣ Prepare public trace response
+//     const traceData = {
+//       name: product.name,
+//       productCode: product.productCode,
+//       status: product.status,
+//       quantity: product.quantity,
+//       unit: product.unit,
+//       manufacturer: {
+//         name: product.manufacturer?.name,
+//         email: product.manufacturer?.email,
+//       },
+//       rawMaterials: product.rawMaterials?.map((rm) => ({
+//         name: rm.name,
+//         batchCode: rm.batchCode,
+//         qualityGrade: rm.qualityGrade,
+//         status: rm.status,
+//         farmer: {
+//           name: rm.farmer?.name,
+//           email: rm.farmer?.email,
+//         },
+//       })),
+//       traceHistory: product.traceHistory?.map((h) => ({
+//         status: h.status,
+//         updatedBy: h.updatedBy?.name || "System",
+//         role: h.updatedBy?.role || "-",
+//         timestamp: h.timestamp,
+//       })),
+//       productionDate: product.productionDate,
+//       expiryDate: product.expiryDate,
+//       imageUrl: product.imageUrl,
+//       qrCode: product.qrCode,
+//     };
 
-    res.status(200).json({
-      success: true,
-      message: "✅ Product traceability data fetched successfully.",
-      trace: traceData,
-    });
-  } catch (error) {
-    console.error("❌ Error fetching product trace:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error while fetching product trace.",
-      error: error.message,
-    });
-  }
-};
-
+//     res.status(200).json({
+//       success: true,
+//       message: "✅ Product traceability data fetched successfully.",
+//       trace: traceData,
+//     });
+//   } catch (error) {
+//     console.error("❌ Error fetching product trace:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error while fetching product trace.",
+//       error: error.message,
+//     });
+//   }
+// };
 
 export {
   createProduct,
@@ -451,5 +537,5 @@ export {
   getSingleProduct,
   updateProductStatus,
   deleteProduct,
-  getProductTrace ,
+  // getProductTrace,
 };

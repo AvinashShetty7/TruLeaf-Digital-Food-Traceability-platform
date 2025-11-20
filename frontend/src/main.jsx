@@ -30,6 +30,7 @@ const router = createBrowserRouter(
   createRoutesFromElements
   (
   <Route path="/" element={<App />}>
+    <Route path="" element={<HomePage/>}></Route>
     <Route path="register" element={<Register/>}></Route>
     <Route path="otp" element={<OtpVerify/>}></Route>
     <Route path="login" element={<LoginPage/>}></Route>
@@ -48,12 +49,6 @@ const router = createBrowserRouter(
     <Route path="TraceProduct" element={<TraceProduct/>}></Route>
     <Route path="DashboardLayout" element={<DashboardLayout/>}></Route>
 
-
-
-
-
-
-    
   </Route>
   )
 );
