@@ -1,13 +1,16 @@
 import User from "../models/User.model.js";
 import RawMaterial from "../models/RawMaterial.model.js";
 
-
-const getDashboardData = async (req, res) => {
+const getstatistics = async (req, res) => {
   try {
+    console.log(",mmmmmmmmmmmmmmmmmmmmm");
+
     // 1️⃣ Aggregate user stats
     const totalUsers = await User.countDocuments();
     const totalFarmers = await User.countDocuments({ role: "farmer" });
-    const totalManufacturers = await User.countDocuments({ role: "manufacturer" });
+    const totalManufacturers = await User.countDocuments({
+      role: "manufacturer",
+    });
     const totalAdmins = await User.countDocuments({ role: "admin" });
 
     const verifiedUsers = await User.countDocuments({ verified: true });
@@ -15,16 +18,15 @@ const getDashboardData = async (req, res) => {
 
     // 2️⃣ Aggregate raw material stats
     const totalRawMaterials = await RawMaterial.countDocuments();
-    const availableMaterials = await RawMaterial.countDocuments({ status: "available" });
-    const consumedMaterials = await RawMaterial.countDocuments({ status: "consumed" });
-    const expiredMaterials = await RawMaterial.countDocuments({ status: "expired" });
-
-    // 3️⃣ Optional: latest raw materials (for dashboard preview)
-    const latestMaterials = await RawMaterial.find()
-      .populate("farmer", "name email")
-      .sort({ createdAt: -1 })
-      .limit(5)
-      .select("name batchCode qualityGrade status pricePerUnit");
+    const availableMaterials = await RawMaterial.countDocuments({
+      status: "available",
+    });
+    const consumedMaterials = await RawMaterial.countDocuments({
+      status: "consumed",
+    });
+    const expiredMaterials = await RawMaterial.countDocuments({
+      status: "expired",
+    });
 
     // 4️⃣ Return dashboard summary
     res.status(200).json({
@@ -45,7 +47,6 @@ const getDashboardData = async (req, res) => {
           consumed: consumedMaterials,
           expired: expiredMaterials,
         },
-        latestMaterials,
       },
     });
   } catch (error) {
@@ -57,99 +58,6 @@ const getDashboardData = async (req, res) => {
     });
   }
 };
-
-
-const getAnalytics = async (req, res) => {
-  try {
-    // 1️⃣ Users Growth by Month (last 6 months)
-    const userGrowth = await User.aggregate([
-      {
-        $group: {
-          _id: { $month: "$createdAt" },
-          totalUsers: { $sum: 1 },
-        },
-      },
-      { $sort: { "_id": 1 } },
-    ]);
-
-    // 2️⃣ Raw Materials Added by Month
-    const materialGrowth = await RawMaterial.aggregate([
-      {
-        $group: {
-          _id: { $month: "$createdAt" },
-          totalMaterials: { $sum: 1 },
-        },
-      },
-      { $sort: { "_id": 1 } },
-    ]);
-
-    // 3️⃣ Quality Grade Distribution
-    const qualityDistribution = await RawMaterial.aggregate([
-      {
-        $group: {
-          _id: "$qualityGrade",
-          count: { $sum: 1 },
-        },
-      },
-      { $sort: { count: -1 } },
-    ]);
-
-    // 4️⃣ Material Status Distribution
-    const statusDistribution = await RawMaterial.aggregate([
-      {
-        $group: {
-          _id: "$status",
-          count: { $sum: 1 },
-        },
-      },
-      { $sort: { count: -1 } },
-    ]);
-
-    // 5️⃣ Role Distribution
-    const roleDistribution = await User.aggregate([
-      {
-        $group: {
-          _id: "$role",
-          count: { $sum: 1 },
-        },
-      },
-      { $sort: { count: -1 } },
-    ]);
-
-    // Format months (1 → Jan, 2 → Feb, etc.)
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const formattedUserGrowth = userGrowth.map((u) => ({
-      month: monthNames[u._id - 1],
-      totalUsers: u.totalUsers,
-    }));
-
-    const formattedMaterialGrowth = materialGrowth.map((m) => ({
-      month: monthNames[m._id - 1],
-      totalMaterials: m.totalMaterials,
-    }));
-
-    // ✅ Response
-    res.status(200).json({
-      success: true,
-      message: "✅ Admin analytics data fetched successfully",
-      analytics: {
-        userGrowth: formattedUserGrowth,
-        materialGrowth: formattedMaterialGrowth,
-        qualityDistribution,
-        statusDistribution,
-        roleDistribution,
-      },
-    });
-  } catch (error) {
-    console.error("❌ Error fetching admin analytics:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error while fetching analytics data",
-      error: error.message,
-    });
-  }
-};
-
 
 const verifyProduct = async (req, res) => {
   try {
@@ -168,8 +76,13 @@ const verifyProduct = async (req, res) => {
     }
 
     // 3️⃣ Check if already verified
-    if (product.verificationStatus === "approved" && verifiedStatus === "approved") {
-      return res.status(400).json({ message: "Product is already verified and approved." });
+    if (
+      product.verificationStatus === "approved" &&
+      verifiedStatus === "approved"
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Product is already verified and approved." });
     }
 
     // 4️⃣ Update verification details
@@ -199,5 +112,140 @@ const verifyProduct = async (req, res) => {
   }
 };
 
+const verifyfarmer = async (req, res) => {
+  try {
+    const farmer = await User.findByIdAndUpdate(
+      req.params.id,
+      { verified: true },
+      { new: true }
+    );
+    res.json({ success: true, farmer });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
 
-export {getDashboardData, getAnalytics ,verifyProduct }
+const verifymanufacturer = async (req, res) => {
+  try {
+    const manufacturer = await User.findByIdAndUpdate(
+      req.params.id,
+      { verified: true },
+      { new: true }
+    );
+    res.json({ success: true, manufacturer });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+const pendingfarmers = async (req, res) => {
+  try {
+    const farmers = await User.find({ role: "farmer", verified: false });
+    res.json({ success: true, farmers });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+const pendingmanufacturers = async (req, res) => {
+  try {
+    const manufacturers = await User.find({
+      role: "manufacturer",
+      verified: false,
+    });
+    res.json({ success: true, manufacturers });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Get all farmers
+const getAllFarmers = async (req, res) => {
+  try {
+    console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmm");
+
+    const farmers = await User.find({ role: "farmer" }).sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      farmers,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching farmers",
+      error: err.message,
+    });
+  }
+};
+
+const getAllManufacturers = async (req, res) => {
+  try {
+    const manufacturers = await User.find({ role: "manufacturer" }).sort({
+      createdAt: -1,
+    });
+
+    res.json({
+      success: true,
+      manufacturers,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching manufacturers",
+      error: err.message,
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Find the user first
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // If FARMER → delete raw materials created by farmer
+    if (user.role === "farmer") {
+      await RawMaterial.deleteMany({ farmer: userId });
+    }
+
+    // If MANUFACTURER → delete products created by manufacturer
+    if (user.role === "manufacturer") {
+      await Product.deleteMany({ manufacturer: userId });
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.json({
+      success: true,
+      message: `${user.role} deleted successfully`,
+    });
+  } catch (err) {
+    console.error("Delete user error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Error deleting user",
+      error: err.message,
+    });
+  }
+};
+
+export {
+  getstatistics,
+  verifyProduct,
+  verifyfarmer,
+  verifymanufacturer,
+  pendingfarmers,
+  pendingmanufacturers,
+  getAllFarmers,
+  getAllManufacturers,
+  deleteUser,
+};

@@ -43,7 +43,7 @@ export default function Fetchallraws() {
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
             {items.map((item) => (
               <Link
-                to={`/singlerawdetails/${item.batchCode}`}
+                to={`/manu/singlerawdetails/${item.batchCode}`}
                 key={item.batchCode}
                 className="group bg-white border border-gray-100 shadow-md hover:shadow-lg sm:hover:shadow-xl transition-all rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden hover:-translate-y-1 sm:hover:-translate-y-2 flex flex-col h-full"
               >

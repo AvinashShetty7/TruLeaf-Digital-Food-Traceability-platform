@@ -9,7 +9,7 @@ import rawMaterialRoutes from "./routes/rawMaterialRoutes.js";
 import imageRoutes from "./routes/imageRoutes.js"
 import productRoutes from "./routes/productRoutes.js";
 // import traceabilityRoutes from "./routes/traceabilityRoutes.js";
-// import adminRoutes from "./routes/adminRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -31,7 +31,7 @@ app.use("/api/rawmaterial", rawMaterialRoutes);
 app.use("/api/farmer", imageRoutes);
 app.use("/api/product", productRoutes);
 // app.use("/api/trace", traceabilityRoutes);
-// app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Default
 app.get("/", (req, res) => res.send("Food Supply Chain API Running ✅"));

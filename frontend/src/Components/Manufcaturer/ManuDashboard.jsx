@@ -1,55 +1,125 @@
+import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { Menu, X , Leaf, BarChart2, PackageSearch, Plus, LifeBuoy, TicketCheck } from "lucide-react";
 
 export default function DashboardLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState("/manu/marketprice");
+
+  const menuItems = [
+    { label: "Market Price", path: "/manu/marketprice", icon: BarChart2 },
+    { label: "Add Product", path: "/manu/CreateProduct", icon: Plus },
+    { label: "My Product", path: "/manu/MyProducts", icon: PackageSearch },
+    { label: "All Available raws", path: "/manu/Fetchallraws", icon: Leaf },
+    { label: "Reserved raws", path: "#", icon: LifeBuoy },
+    { label: "consumed raws", path: "#", icon: TicketCheck },
+  ];
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-50">
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-green-800 text-white py-8 px-4 shadow-lg">
-        <h2 className="text-2xl font-bold mb-10 text-center">Dashboard</h2>
+      {/* Sidebar */}
+      <aside
+        className={`fixed md:relative top-0 left-0 h-screen w-64 bg-gradient-to-b from-green-700 via-green-800 to-green-900 text-white transform transition-all duration-300 z-40 shadow-xl flex flex-col overflow-y-auto
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-green-600">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                <span className="text-green-800 font-bold">A</span>
+              </div>
+              <h1 className="text-xl font-bold text-white">Manufacturer</h1>
+            </div>
+            <button
+              className="md:hidden text-white hover:bg-green-600 p-1.5 rounded-lg transition"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
 
-        <nav className="space-y-4">
-          <Link
-            to="/CreateProduct"
-            className="block px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            Add Product
-          </Link>
-
-          <Link
-            to="/Fetchallraws"
-            className="block px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            Available Raw Materials
-          </Link>
-
-          <Link
-            to="/MarketPricePage"
-            className="block px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            Market Price
-          </Link>
-
-          <Link
-            to="#"
-            className="block px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            My Reserved Raws
-          </Link>
-
-          <Link
-            to="#"
-            className="block px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            My Consumed Products
-          </Link>
+        {/* Navigation */}
+        <nav className="flex-1 px-4 py-6 space-y-1">
+          {menuItems.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={idx}
+                to={item.path}
+                onClick={() => {
+                  setCurrentPage(item.path);
+                  setSidebarOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  currentPage === item.path
+                    ? "bg-white text-green-700 shadow-md"
+                    : "text-green-100 hover:bg-green-600 hover:text-white"
+                }`}
+              >
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-green-600">
+          <p className="text-xs text-green-200 text-center">© 2025 Farm Direct Manufacturer</p>
+        </div>
       </aside>
 
-      {/* MAIN CONTENT */}
-      <main className="flex-1 p-10">
-        <Outlet />
-      </main>
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Top Header */}
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex items-center justify-between shadow-sm sticky top-0 z-20">
+          <div className="flex items-center gap-4">
+            <button
+              className="md:hidden text-green-700 hover:bg-green-50 p-2 rounded-lg transition"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <Menu size={24} />
+            </button>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Dashboard</h1>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <span className="text-green-700 font-semibold">AD</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Routed Pages display here */}
+            <Outlet />
+
+            {/* Optional: Remove this welcome box if you don't want it once routing is active */}
+            {!currentPage || currentPage === "" ? (
+              <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                  Welcome to Manufacturer Dashboard
+                </h2>
+                <p className="text-gray-600 mb-6">
+                  Select an option from the sidebar to manage your platform
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

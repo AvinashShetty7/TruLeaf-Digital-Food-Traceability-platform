@@ -26,31 +26,56 @@ import TraceProduct from "./Components/Traceproduct.jsx";
 import Singlerawdetails from "./Components/Manufcaturer/Singlerawdetails.jsx";
 import DashboardLayout from "./Components/Manufcaturer/ManuDashboard.jsx";
 import MyProducts from "./Components/Manufcaturer/MyProduct.jsx";
+import AdminDashboardLayout from "./Components/Admin/Admindashboard.jsx";
+import VerifyFarmers from "./Components/Admin/verifyfarmers.jsx";
+import VerifyManufacturers from "./Components/Admin/verifymanufactueres.jsx";
+import AdminStats from "./Components/Admin/AdminStats.jsx";
+import RawMaterialList from "./Components/Admin/RawMaterialList.jsx";
+import Productlist from "./Components/Admin/Productlist.jsx";
+import Farmers from "./Components/Admin/Farmer.jsx";
+import Manufacturer from "./Components/Admin/Manufacturer.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements
   (
   <Route path="/" element={<App />}>
     <Route path="" element={<HomePage/>}></Route>
+    <Route path="HomePage" element={<HomePage/>}></Route>
     <Route path="register" element={<Register/>}></Route>
     <Route path="otp" element={<OtpVerify/>}></Route>
     <Route path="login" element={<LoginPage/>}></Route>
-    <Route path="FarmerKYCPage" element={<FarmerKYCPage/>}></Route>
-    <Route path="FarmerDashboard" element={<FarmerDashboard/>}></Route>
-    <Route path="AddRawMaterial" element={<AddRawMaterial/>}></Route>
-    <Route path="FarmerRawMaterialList" element={<FarmerRawMaterialList/>}></Route>
-    <Route path="SingleItem/:batchCode" element={<SingleItem/>}></Route>
-    <Route path="Singlerawdetails/:batchCode" element={<Singlerawdetails/>}></Route>
-    <Route path="ManufacturerKYCPage" element={<ManufacturerKYCPage/>}></Route>
-    <Route path="CreateProduct" element={<CreateProduct/>}></Route>
-    <Route path="Fetchallraws" element={<Fetchallraws/>}></Route>
-    <Route path="MarketPricePage" element={<MarketPricePage/>}></Route>
-    <Route path="GoogleMap" element={<GoogleMap/>}></Route>
-    <Route path="HomePage" element={<HomePage/>}></Route>
     <Route path="traceproduct/:id" element={<TraceProduct/>}></Route>
-    <Route path="DashboardLayout" element={<DashboardLayout/>}></Route>
-    <Route path="MyProducts" element={<MyProducts/>}></Route>
 
+    <Route path="farmer" element={<FarmerDashboard/>}>
+        <Route path="" element={<MarketPricePage/>}></Route>
+        <Route path="marketprice" element={<MarketPricePage/>}></Route>
+        <Route path="AddRawMaterial" element={<AddRawMaterial/>}></Route>
+        <Route path="FarmerRawMaterialList" element={<FarmerRawMaterialList/>}></Route>
+        <Route path="SingleItem/:batchCode" element={<SingleItem/>}></Route>
+        <Route path="FarmerKYCPage" element={<FarmerKYCPage/>}></Route>
+    </Route>
+
+    <Route path="manu" element={<DashboardLayout/>}>
+        <Route path="" element={<MarketPricePage/>}></Route>
+        <Route path="marketprice" element={<MarketPricePage/>}></Route>
+        <Route path="Singlerawdetails/:batchCode" element={<Singlerawdetails/>}></Route>
+        <Route path="ManufacturerKYCPage" element={<ManufacturerKYCPage/>}></Route>
+        <Route path="CreateProduct" element={<CreateProduct/>}></Route>
+        <Route path="Fetchallraws" element={<Fetchallraws/>}></Route>
+        <Route path="MyProducts" element={<MyProducts/>}></Route>
+    </Route>
+
+    <Route path="Admin" element={<AdminDashboardLayout/>}>
+        <Route path="" element={<AdminStats/>}></Route>
+        <Route path="marketprice" element={<MarketPricePage/>}></Route>
+        <Route path="VerifyFarmers" element={<VerifyFarmers/>}></Route>
+        <Route path="VerifyManufacturers" element={<VerifyManufacturers/>}></Route>
+        <Route path="stats" element={<AdminStats/>}></Route>
+        <Route path="rawmaterials" element={<RawMaterialList/>}></Route>
+        <Route path="products" element={<Productlist/>}></Route>
+        <Route path="farmers" element={<Farmers/>}></Route>
+        <Route path="manufacturers" element={<Manufacturer/>}></Route>
+    </Route>
 
   </Route>
   )

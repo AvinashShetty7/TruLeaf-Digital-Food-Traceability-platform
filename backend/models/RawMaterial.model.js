@@ -27,7 +27,7 @@ const rawMaterialSchema = new mongoose.Schema({
   //     longitude: { type: Number },
   //   },
   requestedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
-  qrCode: { type: String },
+  // qrCode: { type: String },
   status: {
     type: String,
     enum: ["available","reserved","sold","delivered","consumed", "expired"],

@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Menu, X, Upload,Plus, Package, Leaf, Pencil, BarChart2 } from "lucide-react";
+import { Menu, X, BarChart3, CheckCircle, Package, Leaf, Users, BarChart2 } from "lucide-react";
 
-export default function FarmerDashboard() {
+export default function AdminDashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState("/farmer/marketprice");
+  const [currentPage, setCurrentPage] = useState("/admin/stats");
 
   const menuItems = [
-    { label: "Market Price", path: "/farmer/marketprice", icon: BarChart2 },
-    { label: "Add raw material", path: "/farmer/AddRawMaterial", icon: Plus },
-    { label: "My raw material", path: "/farmer/FarmerRawMaterialList", icon: Leaf },
-    { label: "uploaded documents", path: "#", icon: Upload },
-    { label: "update profile", path: "#", icon: Pencil },
+    { label: "Statistics", path: "/admin/stats", icon: BarChart2 },
+    { label: "Verify Farmers", path: "/admin/VerifyFarmers", icon: CheckCircle },
+    { label: "Verify Manufacturers", path: "/admin/VerifyManufacturers", icon: CheckCircle },
+    { label: "All Products", path: "/admin/products", icon: Package },
+    { label: "Raw Materials", path: "/admin/rawmaterials", icon: Leaf },
+    { label: "Farmers", path: "/admin/farmers", icon: Users },
+    { label: "Manufacturers", path: "/admin/manufacturers", icon: Users },
+    { label: "Market Price", path: "/admin/MarketPrice", icon: BarChart3 },
   ];
 
   return (
@@ -36,7 +39,7 @@ export default function FarmerDashboard() {
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                 <span className="text-green-800 font-bold">A</span>
               </div>
-              <h1 className="text-xl font-bold text-white">Farmer</h1>
+              <h1 className="text-xl font-bold text-white">Admin</h1>
             </div>
             <button
               className="md:hidden text-white hover:bg-green-600 p-1.5 rounded-lg transition"
@@ -74,7 +77,7 @@ export default function FarmerDashboard() {
 
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-green-600">
-          <p className="text-xs text-green-200 text-center">© 2025 Farm Direct farmer</p>
+          <p className="text-xs text-green-200 text-center">© 2025 Farm Direct Admin</p>
         </div>
       </aside>
 
@@ -109,7 +112,7 @@ export default function FarmerDashboard() {
             {!currentPage || currentPage === "" ? (
               <div className="bg-white rounded-xl shadow-sm p-8 text-center">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  Welcome to Farmer Dashboard
+                  Welcome to Admin Dashboard
                 </h2>
                 <p className="text-gray-600 mb-6">
                   Select an option from the sidebar to manage your platform
