@@ -11,9 +11,7 @@ dotenv.config();
 const registerUser = async (req, res) => {
   
   try {
-    const { name, email, phone, password, role } = req.body;
-    console.log(req.body);
-    
+    const { name, email, phone, password, role } = req.body;    
 
     if (!name || !email || !password || !role) {
       return res
@@ -56,12 +54,11 @@ const registerUser = async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log(`✅ OTP ${otp} sent to ${email}`);
 
     res.status(201).json({
       success: true,
       message:
-        "✅ User registered successfully! OTP sent to your email for verification.",
+        "✅ OTP sent to your email for verification.",
       user: {
         name: tempUser.name,
         email: tempUser.email,
@@ -106,11 +103,12 @@ const verifyOtp = async (req, res) => {
         .json({ message: "OTP expired. Please resend a new one." });
     }
 
-    if (tempuser.otp !== otp) {
+    if ( tempuser.otp !== otp) {
       return res
         .status(400)
         .json({ message: "Invalid OTP. Please try again." });
     }
+    
     const hashedPassword = await bcrypt.hash(formData.password, 10);
        
     const user = await User.create({

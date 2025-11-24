@@ -159,36 +159,13 @@ export default function FarmerKYCPage() {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-green-100 via-white to-green-50 text-gray-800">
-      {/* Sidebar */}
-      <div
-        className={`fixed z-20 top-0 left-0 h-full w-64 bg-white shadow-2xl border-r border-gray-100 p-6 transition-transform duration-300
-         lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
-      >
-        <h2 className="text-2xl font-semibold text-green-700 mb-8 tracking-tight">Farmer Panel</h2>
-
-        <nav className="space-y-3">
-          <a
-            href="#add-docs"
-            className="block p-3 rounded-lg text-gray-700 font-medium hover:bg-green-100 hover:text-green-700 transition-colors"
-          >
-            Add Documents
-          </a>
-        </nav>
-      </div>
-
-      {/* Mobile Menu Button */}
-      <button
-        className="lg:hidden fixed top-4 left-4 z-30 bg-green-600 text-white p-2 rounded-md shadow-md hover:bg-green-700 transition-colors"
-        onClick={() => setOpen(!open)}
-      >
-        {open ? <X size={28} /> : <Menu size={28} />}
-      </button>
 
       {/* Main Content */}
-      <div className="flex-1 px-6 py-10 lg:ml-64">
-        <h1 className="text-3xl font-bold text-green-800 mb-8 text-center lg:text-left">
+      <div className="flex-1 px-6 py-10 ">
+        <h1 className="text-3xl font-bold text-green-800 mb-8 text-center lg:text-2xl">
           Upload KYC Documents
         </h1>
+        <p className="text-3xl font-bold text-red-800 mb-8 text-center lg:text-2xl" >upload documents if not,if already uploaded Your documents verification is in progress</p>
 
         {/* Upload Card */}
         <div

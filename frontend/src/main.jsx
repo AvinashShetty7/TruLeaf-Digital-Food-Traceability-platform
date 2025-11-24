@@ -45,6 +45,8 @@ const router = createBrowserRouter(
     <Route path="otp" element={<OtpVerify/>}></Route>
     <Route path="login" element={<LoginPage/>}></Route>
     <Route path="traceproduct/:id" element={<TraceProduct/>}></Route>
+    <Route path="FarmerKYCPage" element={<FarmerKYCPage/>}></Route>
+    <Route path="ManufacturerKYCPage" element={<ManufacturerKYCPage/>}></Route>
 
     <Route path="farmer" element={<FarmerDashboard/>}>
         <Route path="" element={<MarketPricePage/>}></Route>
@@ -52,14 +54,12 @@ const router = createBrowserRouter(
         <Route path="AddRawMaterial" element={<AddRawMaterial/>}></Route>
         <Route path="FarmerRawMaterialList" element={<FarmerRawMaterialList/>}></Route>
         <Route path="SingleItem/:batchCode" element={<SingleItem/>}></Route>
-        <Route path="FarmerKYCPage" element={<FarmerKYCPage/>}></Route>
     </Route>
 
     <Route path="manu" element={<DashboardLayout/>}>
         <Route path="" element={<MarketPricePage/>}></Route>
         <Route path="marketprice" element={<MarketPricePage/>}></Route>
         <Route path="Singlerawdetails/:batchCode" element={<Singlerawdetails/>}></Route>
-        <Route path="ManufacturerKYCPage" element={<ManufacturerKYCPage/>}></Route>
         <Route path="CreateProduct" element={<CreateProduct/>}></Route>
         <Route path="Fetchallraws" element={<Fetchallraws/>}></Route>
         <Route path="MyProducts" element={<MyProducts/>}></Route>
