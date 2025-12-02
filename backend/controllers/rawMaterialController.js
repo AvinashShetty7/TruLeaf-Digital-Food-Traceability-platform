@@ -116,6 +116,90 @@ const getAllRawMaterials = async (req, res) => {
   }
 };
 
+const getAllavailableRawMaterials = async (req, res) => {
+  try {
+    const materials = await RawMaterial.find({status:"available"})
+      .populate("farmer", "name email phone") // get farmer details
+      .sort({ createdAt: -1 }); // latest first
+
+    res.status(200).json({
+      success: true,
+      count: materials.length,
+      materials,
+    });
+  } catch (error) {
+    console.error("❌ Error fetching raw materials:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching raw materials",
+      error: error.message,
+    });
+  }
+};
+
+const getmyreservedraws = async (req, res) => {
+  try {
+    const materials = await RawMaterial.find({status:"reserved",requestedBy:req.user._id})
+      .populate("farmer", "name email phone") // get farmer details
+      .sort({ createdAt: -1 }); // latest first
+
+    res.status(200).json({
+      success: true,
+      count: materials.length,
+      materials,
+    });
+  } catch (error) {
+    console.error("❌ Error fetching raw materials:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching raw materials",
+      error: error.message,
+    });
+  }
+};
+
+const getmyconsumedraws = async (req, res) => {
+  try {
+    const materials = await RawMaterial.find({status:"consumed",manufacturer:req.user._id})
+      .populate("farmer", "name email phone") // get farmer details
+      .sort({ createdAt: -1 }); // latest first
+
+    res.status(200).json({
+      success: true,
+      count: materials.length,
+      materials,
+    });
+  } catch (error) {
+    console.error("❌ Error fetching raw materials:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching raw materials",
+      error: error.message,
+    });
+  }
+};
+
+const getmybuyedraws= async (req, res) => {
+  try {
+    const materials = await RawMaterial.find({status:"sold",manufacturer:req.user._id})
+      .populate("farmer", "name email phone") // get farmer details
+      .sort({ createdAt: -1 }); // latest first
+
+    res.status(200).json({
+      success: true,
+      count: materials.length,
+      materials,
+    });
+  } catch (error) {
+    console.error("❌ Error fetching raw materials:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching raw materials",
+      error: error.message,
+    });
+  }
+};
+
 const getSingleRawMaterial = async (req, res) => {
   try {
     const { batchCode } = req.params;
@@ -339,4 +423,8 @@ export {
   deleteRawMaterial,
   markAsConsumed,
   getmanufacturerbuyedraws,
+  getAllavailableRawMaterials,
+  getmyreservedraws,
+  getmyconsumedraws,
+  getmybuyedraws,
 };

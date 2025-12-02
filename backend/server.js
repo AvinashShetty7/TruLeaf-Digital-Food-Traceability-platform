@@ -27,7 +27,7 @@ connectDB();
 
 // Routes
 app.use("/api/user",userRoutes);
-app.use("/api/rawmaterial",checkAuth ,rawMaterialRoutes);
+app.use("/api/rawmaterial",checkAuth,rawMaterialRoutes);
 app.use("/api/farmer", checkAuth,imageRoutes);
 app.use("/api/product",productRoutes);
 // app.use("/api/trace", traceabilityRoutes);

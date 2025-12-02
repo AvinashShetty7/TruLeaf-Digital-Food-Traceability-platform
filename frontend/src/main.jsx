@@ -33,6 +33,9 @@ import RawMaterialList from "./Components/Admin/RawMaterialList.jsx";
 import Productlist from "./Components/Admin/Productlist.jsx";
 import Farmers from "./Components/Admin/Farmer.jsx";
 import Manufacturer from "./Components/Admin/Manufacturer.jsx";
+import Myreservedraws from "./Components/Manufcaturer/Myreservedraws.jsx";
+import Myconsumedraws from "./Components/Manufcaturer/Myconsumedraws.jsx";
+import Mybuyedraws from "./Components/Manufcaturer/buyedraws.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements
@@ -62,6 +65,10 @@ const router = createBrowserRouter(
         <Route path="CreateProduct" element={<CreateProduct/>}></Route>
         <Route path="Fetchallraws" element={<Fetchallraws/>}></Route>
         <Route path="MyProducts" element={<MyProducts/>}></Route>
+        <Route path="Myreservedraws" element={<Myreservedraws/>}></Route>
+        <Route path="Myconsumedraws" element={<Myconsumedraws/>}></Route>
+        <Route path="Mybuyedraws" element={<Mybuyedraws/>}></Route>
+
     </Route>
 
     <Route path="Admin" element={<AdminDashboardLayout/>}>

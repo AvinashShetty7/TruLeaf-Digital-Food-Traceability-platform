@@ -1,24 +1,60 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Menu, X, BarChart3, CheckCircle, Package, Leaf, Users, BarChart2, LogOut } from "lucide-react";
+import { useEffect } from "react";
+import {
+  Menu,
+  X,
+  BarChart3,
+  CheckCircle,
+  Package,
+  Leaf,
+  Users,
+  BarChart2,
+  LogOut,
+} from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboardLayout() {
-  const navigate=useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("/admin/stats");
+  const [user, setUser] = useState(null);
 
   const menuItems = [
     { label: "Statistics", path: "/admin/stats", icon: BarChart2 },
-    { label: "Verify Farmers", path: "/admin/VerifyFarmers", icon: CheckCircle },
-    { label: "Verify Manufacturers", path: "/admin/VerifyManufacturers", icon: CheckCircle },
+    {
+      label: "Verify Farmers",
+      path: "/admin/VerifyFarmers",
+      icon: CheckCircle,
+    },
+    {
+      label: "Verify Manufacturers",
+      path: "/admin/VerifyManufacturers",
+      icon: CheckCircle,
+    },
     { label: "All Products", path: "/admin/products", icon: Package },
     { label: "Raw Materials", path: "/admin/rawmaterials", icon: Leaf },
     { label: "Farmers", path: "/admin/farmers", icon: Users },
     { label: "Manufacturers", path: "/admin/manufacturers", icon: Users },
     { label: "Market Price", path: "/admin/MarketPrice", icon: BarChart3 },
   ];
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/api/user/validlogin`, {
+          withCredentials: true,
+        });
+        setUser(res.data.user.name);
+      } catch (err) {
+        console.log("user not logged in ");
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -46,7 +82,9 @@ export default function AdminDashboardLayout() {
       {/* Sidebar */}
       <aside
         className={`fixed md:relative top-0 left-0 h-screen w-64 bg-gradient-to-b from-green-700 via-green-800 to-green-900 text-white transform transition-all duration-300 z-40 shadow-xl flex flex-col overflow-y-auto
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
       >
         {/* Sidebar Header */}
         <div className="p-6 border-b border-green-600">
@@ -55,7 +93,7 @@ export default function AdminDashboardLayout() {
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                 <span className="text-green-800 font-bold">A</span>
               </div>
-              <h1 className="text-xl font-bold text-white">Admin</h1>
+              <h1 className="text-xl font-bold text-white">{user}</h1>
             </div>
             <button
               className="md:hidden text-white hover:bg-green-600 p-1.5 rounded-lg transition"
@@ -90,20 +128,22 @@ export default function AdminDashboardLayout() {
             );
           })}
         </nav>
-        
+
         <span>
-            <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3  rounded-lg text-sm font-medium transition-all duration-200 flex-1 px-4 py-3 space-y-1 text-green-100 hover:bg-green-600 hover:text-white"
-        >
-          <LogOut/>
-          Logout
-        </button>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3  rounded-lg text-sm font-medium transition-all duration-200 flex-1 px-4 py-3 space-y-1 text-green-100 hover:bg-green-600 hover:text-white"
+          >
+            <LogOut />
+            Logout
+          </button>
         </span>
 
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-green-600">
-          <p className="text-xs text-green-200 text-center">© 2025 Farm Direct Admin</p>
+          <p className="text-xs text-green-200 text-center">
+            © 2025 Farm Direct Admin
+          </p>
         </div>
       </aside>
 
@@ -118,7 +158,9 @@ export default function AdminDashboardLayout() {
             >
               <Menu size={24} />
             </button>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Dashboard</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+              Dashboard
+            </h1>
           </div>
 
           <div className="flex items-center gap-3">

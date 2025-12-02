@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function Fetchallraws() {
+export default function Mybuyedraws() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [items, setItems] = useState([]);
@@ -11,7 +11,7 @@ export default function Fetchallraws() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/rawmaterial/allavailableraws`,{withCredentials:true} );
+        const res = await axios.get(`${API_URL}/api/rawmaterial/buyedraws`,{withCredentials:true} );
         setItems(res.data.materials || []);
       } catch (error) {
         console.log("Error fetching raw materials", error);

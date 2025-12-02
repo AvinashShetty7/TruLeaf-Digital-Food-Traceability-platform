@@ -8,7 +8,9 @@ export const checkAuth = async (req, res, next) => {
 
   try {
     // 1️⃣ Get token from cookie (preferred)
-    const token = req.cookies?.tokenid;  
+    const token = req.cookies?.tokenid;
+    console.log(token);
+      
     if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
     }

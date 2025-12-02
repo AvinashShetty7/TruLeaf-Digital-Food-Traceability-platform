@@ -20,7 +20,7 @@ export default function SingleItem() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/rawmaterial/${batchCode}`, {
+        const res = await axios.get(`${API_URL}/api/rawmaterial/singleraw/${batchCode}`, {
           withCredentials: true,
         });
         setItem(res.data.rawMaterial);
@@ -183,16 +183,6 @@ export default function SingleItem() {
                   <p className="text-base font-semibold text-gray-900 flex items-center gap-2">
                     📍 {item.location}
                   </p>
-                  <button
-                    onClick={() =>
-                      openDirections(item.location)
-                    }
-                    className="px-3 py-1 bg-green-600 text-white rounded"
-                  >
-                    <span className="font-semibold tracking-wide">
-                      Open in Maps 🚚
-                    </span>
-                  </button>
                 </div>
 
                 <div>
@@ -307,53 +297,48 @@ export default function SingleItem() {
             </div>
 
             {/* Supplier Info Card */}
-            {item.farmerInfo && (
+            {item.farmer && (
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   🚜 Supplier Info
                 </h3>
 
                 <div className="space-y-3">
-                  {item.farmerInfo?.name && (
+                  {item.farmer.name && (
                     <div>
                       <p className="text-xs text-gray-600 uppercase font-bold mb-1">
                         Supplier Name
                       </p>
                       <p className="font-semibold text-gray-900 text-sm">
-                        {item.farmerInfo.name}
+                        {item.farmer.name}
                       </p>
                     </div>
                   )}
 
-                  {item.farmerInfo?.phone && (
+                  {item.farmer.phone && (
                     <a
-                      href={`tel:${item.farmerInfo.phone}`}
+                      href={`tel:${item.farmer.phone}`}
                       className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition text-blue-600 font-medium text-sm"
                     >
                       <span>📞</span>
-                      <span>{item.farmerInfo.phone}</span>
+                      <span>{item.farmer.phone}</span>
                     </a>
                   )}
 
-                  {item.farmerInfo?.email && (
+                  {item.farmer?.email && (
                     <a
-                      href={`mailto:${item.farmerInfo.email}`}
+                      href={`mailto:${item.farmer.email}`}
                       className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition text-blue-600 font-medium text-sm"
                     >
                       <span>✉️</span>
-                      <span className="truncate">{item.farmerInfo.email}</span>
+                      <span className="truncate">{item.farmer.email}</span>
                     </a>
                   )}
 
                   {/* Google Maps Button */}
                   {item.location && (
                     <button
-                      onClick={() => {
-                        const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(
-                          item.location
-                        )}`;
-                        window.open(mapsUrl, "_blank");
-                      }}
+                      onClick={() => openDirections(item.location)}
                       className="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 border border-red-200 text-sm"
                     >
                       📍 View on Google Maps
@@ -364,7 +349,7 @@ export default function SingleItem() {
             )}
 
             {/* Features Card */}
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+            {/* <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 ✨ Features
               </h3>
@@ -406,7 +391,7 @@ export default function SingleItem() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

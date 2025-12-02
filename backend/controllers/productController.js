@@ -205,6 +205,7 @@ const getMyProducts = async (req, res) => {
  * Access: Admin and Manufacturer
  */
 const getAllProducts = async (req, res) => {
+  
   try {
     let products;
 

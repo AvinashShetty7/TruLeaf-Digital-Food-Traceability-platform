@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { Link, Outlet } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import {
   Menu,
   X,
@@ -9,20 +12,43 @@ import {
   Plus,
   LifeBuoy,
   TicketCheck,
+  LogOut,
+  ShoppingCart,
 } from "lucide-react";
 
 export default function DashboardLayout() {
+  const API_URL = import.meta.env.VITE_API_URL;
+    const navigate=useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("/manu/marketprice");
+  const[user,setUser]=useState(null)
+  
 
   const menuItems = [
     { label: "Market Price", path: "/manu/marketprice", icon: BarChart2 },
     { label: "Add Product", path: "/manu/CreateProduct", icon: Plus },
     { label: "My Product", path: "/manu/MyProducts", icon: PackageSearch },
     { label: "All Available raws", path: "/manu/Fetchallraws", icon: Leaf },
-    { label: "Reserved raws", path: "#", icon: LifeBuoy },
-    { label: "consumed raws", path: "#", icon: TicketCheck },
+    { label: "Reserved raws", path: "/manu/Myreservedraws", icon: LifeBuoy },
+    { label: "consumed raws", path: "/manu/Myconsumedraws", icon: TicketCheck },
+    { label: "Buyed raws", path: "/manu/Mybuyedraws", icon: ShoppingCart },
+
   ];
+     useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const res = await axios.get(`${API_URL}/api/user/validlogin`, {
+              withCredentials: true,
+            });
+            setUser(res.data.user.name);
+          } catch (err) {
+            console.log("user not logged in ");
+          }
+        };
+    
+        fetchUser();
+      }, []);
+
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -59,9 +85,9 @@ export default function DashboardLayout() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-green-800 font-bold">A</span>
+                <span className="text-green-800 font-bold">M</span>
               </div>
-              <h1 className="text-xl font-bold text-white">Manufacturer</h1>
+              <h1 className="text-xl font-bold text-white">{user}</h1>
             </div>
             <button
               className="md:hidden text-white hover:bg-green-600 p-1.5 rounded-lg transition"
@@ -97,12 +123,13 @@ export default function DashboardLayout() {
           })}
         </nav>
         <div>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3  rounded-lg text-sm font-medium transition-all duration-200 flex-1 px-4 py-3 space-y-1 text-green-100 hover:bg-green-600 hover:text-white"
-          >
-            Logout
-          </button>
+              <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3  rounded-lg text-sm font-medium transition-all duration-200 flex-1 px-4 py-3 space-y-1 text-green-100 hover:bg-green-600 hover:text-white"
+        >
+          <LogOut/>
+          Logout
+        </button>
         </div>
 
         {/* Sidebar Footer */}

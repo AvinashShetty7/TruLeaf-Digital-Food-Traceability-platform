@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Productlist() {
   const API_URL = import.meta.env.VITE_API_URL;
-  const MANUFACTURER_ID = "691a0664cee641dce9ba2a2e"; // replace with auth
+  // const MANUFACTURER_ID = "691a0664cee641dce9ba2a2e"; // replace with auth
 
   const [products, setProducts] = useState([]);
   const [selectedQR, setSelectedQR] = useState(null);
@@ -13,7 +13,7 @@ export default function Productlist() {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(
-          `${API_URL}/api/product/manufacturer/${MANUFACTURER_ID}`,{withCredentials:true} 
+          `${API_URL}/api/product/manufacturer/allproduct`,{withCredentials:true} 
         );
         setProducts(res.data.products || []);
       } catch (error) {

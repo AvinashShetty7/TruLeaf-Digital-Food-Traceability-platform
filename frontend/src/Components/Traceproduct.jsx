@@ -12,7 +12,7 @@ export default function TraceProduct() {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/product/${id}`,{withCredentials:true});
+        const res = await axios.get(`${API_URL}/api/product/singleproduct/${id}`,{withCredentials:true});
         setProduct(res.data.product);
       } catch (err) {
         console.log("Trace fetch error:", err);

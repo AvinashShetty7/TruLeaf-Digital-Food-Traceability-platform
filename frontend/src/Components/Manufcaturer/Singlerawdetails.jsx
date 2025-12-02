@@ -20,7 +20,10 @@ export default function Singlerawdetails() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/rawmaterial/${batchCode}`,{withCredentials:true} );
+        const res = await axios.get(
+          `${API_URL}/api/rawmaterial/singleraw/${batchCode}`,
+          { withCredentials: true }
+        );
         setItem(res.data.rawMaterial);
         setStatus(res.data.rawMaterial.status);
         setLoading(false);
@@ -38,8 +41,8 @@ export default function Singlerawdetails() {
         `${API_URL}/api/rawmaterial/update/${batchCode}`,
         {
           status,
-        }
-        ,{withCredentials:true} 
+        },
+        { withCredentials: true }
       );
       alert(res.data.message || "Status Updated");
     } catch (err) {
@@ -181,15 +184,7 @@ export default function Singlerawdetails() {
                   <p className="text-base font-semibold text-gray-900 flex items-center gap-2">
                     📍 {item.location}
                   </p>
-                  <button
-                    onClick={() =>
-                      openDirections("kakthota hondadmane ullor 11")
-                    }
-                    className="px-3 py-1 bg-green-600 text-white rounded"
-                  >
-                    <span className="font-semibold tracking-wide">Open in Maps 🚚</span>
-
-                  </button>
+                 
                 </div>
 
                 <div>
@@ -280,86 +275,109 @@ export default function Singlerawdetails() {
             </div>
 
             {/* Status Update Card */}
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                ⚙️ Update Status
-              </h3>
+            {item.status == "available" && (
+              <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  ⚙️ Reserve now
+                </h3>
 
-              <select
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition mb-4 bg-white font-medium text-gray-900 text-sm"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                <option value="reserved"> Reserved</option>
-                <option value="consumed">Consumed</option>
-              </select>
+                <select
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition mb-4 bg-white font-medium text-gray-900 text-sm"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option ></option>
+                  <option value="reserved"> Reserved</option>
+                </select>
 
-              <button
-                onClick={updateStatus}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base"
-              >
-                💾 Save Status
-              </button>
-            </div>
+                <button
+                  onClick={updateStatus}
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  💾 Save Status
+                </button>
+              </div>
+            )}
+
+          {item.status == "reserved" && (
+              <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  ⚙️ Cancel now
+                </h3>
+
+                <select
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition mb-4 bg-white font-medium text-gray-900 text-sm"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option ></option>
+                  <option value="available">Cancel</option>
+
+                </select>
+
+                <button
+                  onClick={updateStatus}
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  💾 Save Status
+                </button>
+              </div>
+            )}
 
             {/* Supplier Info Card */}
-            {item.farmerInfo && (
+            {item.farmer && (
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   🚜 Supplier Info
                 </h3>
 
                 <div className="space-y-3">
-                  {item.farmerInfo?.name && (
+                  {item.farmer.name && (
                     <div>
                       <p className="text-xs text-gray-600 uppercase font-bold mb-1">
                         Supplier Name
                       </p>
                       <p className="font-semibold text-gray-900 text-sm">
-                        {item.farmerInfo.name}
+                        {item.farmer.name}
                       </p>
                     </div>
                   )}
 
-                  {item.farmerInfo?.phone && (
+                  {item.farmer.phone && (
                     <a
-                      href={`tel:${item.farmerInfo.phone}`}
+                      href={`tel:${item.farmer.phone}`}
                       className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition text-blue-600 font-medium text-sm"
                     >
                       <span>📞</span>
-                      <span>{item.farmerInfo.phone}</span>
+                      <span>{item.farmer.phone}</span>
                     </a>
                   )}
 
-                  {item.farmerInfo?.email && (
+                  {item.farmer.email && (
                     <a
-                      href={`mailto:${item.farmerInfo.email}`}
+                      href={`mailto:${item.farmer.email}`}
                       className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition text-blue-600 font-medium text-sm"
                     >
                       <span>✉️</span>
-                      <span className="truncate">{item.farmerInfo.email}</span>
+                      <span className="truncate">{item.farmer.email}</span>
                     </a>
                   )}
 
                   {/* Google Maps Button */}
                   {item.location && (
                     <button
-                      onClick={() => {
-                        const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(
-                          item.location
-                        )}`;
-                        window.open(mapsUrl, "_blank");
-                      }}
+                      onClick={()=>openDirections(item.location)}
                       className="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 border border-red-200 text-sm"
                     >
                       📍 View on Google Maps
                     </button>
+                    
                   )}
                 </div>
               </div>
             )}
 
-            {/* Features Card */}
+            {/* Features Card
             <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 ✨ Features
@@ -402,7 +420,7 @@ export default function Singlerawdetails() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

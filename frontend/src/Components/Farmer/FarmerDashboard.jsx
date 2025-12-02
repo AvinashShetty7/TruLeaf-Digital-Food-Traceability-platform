@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import {
   Menu,
   X,
@@ -9,11 +12,15 @@ import {
   Leaf,
   Pencil,
   BarChart2,
+  LogOut,
 } from "lucide-react";
 
 export default function FarmerDashboard() {
+  const API_URL = import.meta.env.VITE_API_URL;
+    const navigate=useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("/farmer/marketprice");
+  const[user,setUser]=useState(null)
 
   const menuItems = [
     { label: "Market Price", path: "/farmer/marketprice", icon: BarChart2 },
@@ -26,6 +33,22 @@ export default function FarmerDashboard() {
     { label: "uploaded documents", path: "#", icon: Upload },
     { label: "update profile", path: "#", icon: Pencil },
   ];
+
+   useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const res = await axios.get(`${API_URL}/api/user/validlogin`, {
+            withCredentials: true,
+          });
+          setUser(res.data.user.name);
+        } catch (err) {
+          console.log("user not logged in ");
+        }
+      };
+  
+      fetchUser();
+    }, []);
+
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -61,9 +84,9 @@ export default function FarmerDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-green-800 font-bold">A</span>
+                <span className="text-green-800 font-bold">F</span>
               </div>
-              <h1 className="text-xl font-bold text-white">Farmer</h1>
+              <h1 className="text-xl font-bold text-white">{user}</h1>
             </div>
             <button
               className="md:hidden text-white hover:bg-green-600 p-1.5 rounded-lg transition"
@@ -103,6 +126,7 @@ export default function FarmerDashboard() {
           onClick={handleLogout}
           className="w-full flex items-center gap-3  rounded-lg text-sm font-medium transition-all duration-200 flex-1 px-4 py-3 space-y-1 text-green-100 hover:bg-green-600 hover:text-white"
         >
+          <LogOut/>
           Logout
         </button>
         </div>

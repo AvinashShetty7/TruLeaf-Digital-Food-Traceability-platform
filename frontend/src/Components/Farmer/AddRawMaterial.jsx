@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState,useRef } from "react";
 import axios from "axios";
 
 export default function AddRawMaterial() {
   const API_URL = import.meta.env.VITE_API_URL;
+const fileInputRef = useRef(null);
 
-  const [form, setForm] = useState({
+  const initialState={
     name: "",
     quantity: "",
     unit: "",
@@ -15,7 +16,8 @@ export default function AddRawMaterial() {
     qualityGrade: "",
     pricePerUnit: "",
     status: "available",
-  });
+  }
+  const [form, setForm] = useState(initialState);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -40,6 +42,11 @@ export default function AddRawMaterial() {
           headers: { "Content-Type": "multipart/form-data" } 
       }
       );
+
+      setForm(initialState);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // ✅ Clear file input
+      }
       alert(res.data.message || "Raw Material Added Successfully");
     } catch (error) {
       console.error(error);
@@ -60,6 +67,7 @@ export default function AddRawMaterial() {
           <input
             name="name"
             placeholder="Raw Crop Name (e.g. Wheat)"
+            value={form.name}
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
           />
@@ -67,12 +75,14 @@ export default function AddRawMaterial() {
             <input
               name="quantity"
               placeholder="Quantity"
+              value={form.quantity}
               onChange={handleChange}
               className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
             />
             <input
               name="unit"
               placeholder="Unit (kg, ton, etc.)"
+              value={form.unit}
               onChange={handleChange}
               className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
             />
@@ -80,6 +90,7 @@ export default function AddRawMaterial() {
           <input
             name="location"
             placeholder="Location"
+            value={form.location}
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
           />
@@ -91,6 +102,7 @@ export default function AddRawMaterial() {
               <input
                 type="date"
                 name="harvestDate"
+                value={form.harvestDate}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
               />
@@ -102,6 +114,7 @@ export default function AddRawMaterial() {
               <input
                 type="date"
                 name="expiryDate"
+                value={form.expiryDate}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
               />
@@ -114,6 +127,7 @@ export default function AddRawMaterial() {
             <input
               type="file"
               name="imageUrl"
+              ref={fileInputRef} 
               accept="image/*"
               onChange={handleFileChange}
               className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50"
@@ -122,12 +136,14 @@ export default function AddRawMaterial() {
           <input
             name="qualityGrade"
             placeholder="Quality Grade (A, B, C)"
+            value={form.qualityGrade}
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300 outline-none"
           />
           <input
             name="pricePerUnit"
             placeholder="Price per Unit"
+            value={form.pricePerUnit}
             type="number"
             min="0"
             step="0.01"

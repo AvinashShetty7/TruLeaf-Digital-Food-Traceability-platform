@@ -3,7 +3,7 @@ import upload from "../middleware/upload.js"
 import {
   createProduct,
   getMyProducts,
-  // getAllProducts,
+  getAllProducts,
   getSingleProduct,
   // updateProductStatus,
   // deleteProduct,
@@ -15,11 +15,11 @@ const router = express.Router();
 
 // Manufacturer-only
 router.post("/create",checkAuth,upload.single("imageUrl"),createProduct);
-router.get("/manufacturer", getMyProducts);
+router.get("/manufacturer",checkAuth, getMyProducts);
 
 // // Admin + Manufacturer
-// router.get("/all", authMiddleware, roleCheck(["admin", "manufacturer"]), getAllProducts);
-router.get("/:id",getSingleProduct);
+router.get("/manufacturer/allproduct",checkAuth, getAllProducts);
+router.get("/singleproduct/:id",getSingleProduct);
 // router.put("/update-status/:id", authMiddleware, roleCheck(["manufacturer"]), updateProductStatus);
 // router.delete("/delete/:id", authMiddleware, roleCheck(["manufacturer", "admin"]), deleteProduct);
 

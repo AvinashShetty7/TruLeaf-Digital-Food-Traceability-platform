@@ -9,6 +9,10 @@ import {
   deleteRawMaterial,
   markAsConsumed,
   getmanufacturerbuyedraws,
+  getAllavailableRawMaterials,
+  getmyreservedraws,
+  getmyconsumedraws,
+  getmybuyedraws,
 } from "../controllers/rawMaterialController.js";
 
 // import { authMiddleware, roleCheck } from "../middlewares/authMiddleware.js";
@@ -20,8 +24,16 @@ router.get("/myraws", getRawMaterialsByFarmer);
 
 // // Manufacturer/Admin view
 router.get("/allraws",getAllRawMaterials);
-router.get("/:batchCode",getSingleRawMaterial);
+router.get("/allavailableraws",getAllavailableRawMaterials);
+router.get("/singleraw/:batchCode",getSingleRawMaterial);
 router.get("/mybuyedraws",getmanufacturerbuyedraws);
+router.get("/myreservedraws",getmyreservedraws);
+router.get("/myconsumedraws",getmyconsumedraws);
+router.get("/buyedraws",getmybuyedraws);
+
+
+
+
 
 
 // // Update/Delete
