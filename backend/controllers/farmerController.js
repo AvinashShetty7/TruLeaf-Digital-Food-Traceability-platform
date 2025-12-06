@@ -44,7 +44,7 @@ export const uploadKYC = async (req, res) => {
 
     await user.save();
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "KYC documents uploaded successfully!",
       uploadedDocuments: docsToAdd,

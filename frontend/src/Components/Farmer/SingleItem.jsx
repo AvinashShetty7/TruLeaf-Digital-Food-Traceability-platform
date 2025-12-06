@@ -20,9 +20,12 @@ export default function SingleItem() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/rawmaterial/singleraw/${batchCode}`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${API_URL}/api/rawmaterial/singleraw/${batchCode}`,
+          {
+            withCredentials: true,
+          }
+        );
         setItem(res.data.rawMaterial);
         setStatus(res.data.rawMaterial.status);
         setLoading(false);
@@ -273,31 +276,33 @@ export default function SingleItem() {
             </div>
 
             {/* Status Update Card */}
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                ⚙️ Update Status
-              </h3>
+            {item.status!=="sold" &&
+              <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  ⚙️ Update Status
+                </h3>
 
-              <select
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition mb-4 bg-white font-medium text-gray-900 text-sm"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                <option value="available">✓ Available</option>
-                <option value="sold">✕ Sold</option>
-                <option value="expired">⚠ Expired</option>
-              </select>
+                <select
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition mb-4 bg-white font-medium text-gray-900 text-sm"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="available">✓ Available</option>
+                  <option value="sold">✕ Sold</option>
+                  <option value="expired">⚠ Expired</option>
+                </select>
 
-              <button
-                onClick={updateStatus}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base"
-              >
-                💾 Save Status
-              </button>
-            </div>
+                <button
+                  onClick={updateStatus}
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  💾 Save Status
+                </button>
+              </div>
+            }
 
-               {/* reserved manufacture info */}
-            {item.requestedBy  && (
+            {/* reserved manufacture info */}
+            {item.requestedBy && (
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   🚜 Buyer Info
@@ -334,14 +339,12 @@ export default function SingleItem() {
                       <span className="truncate">{item.requestedBy.email}</span>
                     </a>
                   )}
-
-                
                 </div>
               </div>
             )}
 
-                 {/* sold manufacture info */}
-            {item.manufacturer  && (
+            {/* sold manufacture info */}
+            {item.manufacturer && (
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   🚜 Buyer Info
@@ -351,7 +354,7 @@ export default function SingleItem() {
                   {item.manufacturer.name && (
                     <div>
                       <p className="text-xs text-gray-600 uppercase font-bold mb-1">
-                         Name
+                        Name
                       </p>
                       <p className="font-semibold text-gray-900 text-sm">
                         {item.manufacturer.name}
@@ -375,11 +378,11 @@ export default function SingleItem() {
                       className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition text-blue-600 font-medium text-sm"
                     >
                       <span>✉️</span>
-                      <span className="truncate">{item.manufacturer.email}</span>
+                      <span className="truncate">
+                        {item.manufacturer.email}
+                      </span>
                     </a>
                   )}
-
-                
                 </div>
               </div>
             )}

@@ -131,6 +131,8 @@ export default function LoginPage() {
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+      setEmail("");
+      setPassword("");
     } finally {
       setLoading(false);
     }

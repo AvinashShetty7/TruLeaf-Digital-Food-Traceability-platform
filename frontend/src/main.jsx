@@ -59,6 +59,7 @@ const router = createBrowserRouter(
         <Route path="AddRawMaterial" element={<AddRawMaterial/>}></Route>
         <Route path="FarmerRawMaterialList" element={<FarmerRawMaterialList/>}></Route>
         <Route path="SingleItem/:batchCode" element={<SingleItem/>}></Route>
+        <Route path="uploadeddocs/:farmerId" element={<Viewfarmerdocs/>}></Route>
     </Route>
 
     <Route path="manu" element={<DashboardLayout/>}>

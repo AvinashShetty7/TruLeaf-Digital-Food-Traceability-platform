@@ -10,6 +10,7 @@ import {
   verifyUserByAdmin,
   getAllUsers,
   deleteUser,
+  checkdocssubmission
 } from "../controllers/userController.js";
 import { checkAuth } from "../middleware/authMiddleware.js";
 
@@ -23,6 +24,7 @@ router.post("/verify-otp",verifyOtp);
 
 // Authenticated
 router.get("/validlogin",checkAuth,validLogin);
+router.get("/docssubmitted",checkAuth,checkdocssubmission);
 router.post("/logout",checkAuth,logoutUser);
 
 // // Admin-only

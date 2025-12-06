@@ -32,6 +32,8 @@ const registerUser = async (req, res) => {
     });
 
     const otp = Math.floor(100000 + Math.random() * 900000);
+    console.log(otp);
+    
     tempUser.otp = otp;
     tempUser.otpExpiry = Date.now() + 1 * 60 * 1000; // expires in 5 minutes
     await tempUser.save();
@@ -463,6 +465,27 @@ const validLogin = async (req, res) => {
   });
 };
 
+const checkdocssubmission = async (req, res) => {
+  try {
+    const user= await User.findOne({_id:req.user._id})
+      .select("-password ") // exclude sensitive fields
+      .sort({ createdAt: -1 }); // newest first
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("❌ Error fetching pending users:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching user.",
+      error: error.message,
+    });
+  }
+};
+
+
 export {
   registerUser,
   loginUser,
@@ -474,4 +497,5 @@ export {
   deleteUser,
   logoutUser,
   validLogin,
+  checkdocssubmission,
 };
