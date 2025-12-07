@@ -231,8 +231,8 @@ const loginUser = async (req, res) => {
 
     res.cookie("tokenid", token, {
       httpOnly: true,
-      secure: false, // true in production
-      sameSite: "Lax",
+      secure: true, // true in production
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
