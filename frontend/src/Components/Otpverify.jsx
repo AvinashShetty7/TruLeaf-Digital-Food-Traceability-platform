@@ -9,7 +9,7 @@ export default function OtpVerify() {
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState("");
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(300);
   const [canResend, setCanResend] = useState(false);
   const [message, setMessage] = useState("");
 

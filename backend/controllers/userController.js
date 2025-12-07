@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
     console.log(otp);
 
     tempUser.otp = otp;
-    tempUser.otpExpiry = Date.now() + 1 * 60 * 1000; // expires in 5 minutes
+    tempUser.otpExpiry = Date.now() + 5 * 60 * 1000; // expires in 5 minutes
     await tempUser.save();
 
     const transporter = nodemailer.createTransport({
