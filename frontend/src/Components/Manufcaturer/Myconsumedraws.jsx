@@ -11,7 +11,10 @@ export default function Myconsumedraws() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/rawmaterial/myconsumedraws`,{withCredentials:true} );
+        const res = await axios.get(
+          `${API_URL}/api/rawmaterial/myconsumedraws`,
+          { withCredentials: true }
+        );
         setItems(res.data.materials || []);
       } catch (error) {
         console.log("Error fetching raw materials", error);
@@ -25,9 +28,19 @@ export default function Myconsumedraws() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-8 lg:py-10">
       <div className="w-full max-w-7xl mx-auto">
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-blue-900 mb-8 sm:mb-10 md:mb-12 text-center tracking-tight">
-          All Raw Materials
-        </h1>
+        <div className="relative mb-5 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white py-7 px-6 shadow-xl overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
+          </div>
+          <div className="max-w-6xl mx-auto relative z-10">
+            <div className="flex items-center gap-3 mb-4">
+            </div>
+            <h1 className="text-4xl md:text-5xl font-black mb-3 leading-tight">
+              Consumed crops
+            </h1>
+          </div>
+        </div>
 
         {loading ? (
           <div className="flex justify-center items-center min-h-96">
@@ -59,32 +72,40 @@ export default function Myconsumedraws() {
                   <h2 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-blue-900 mb-0.5 sm:mb-1 md:mb-1.5 line-clamp-2">
                     {item.name}
                   </h2>
-                  
+
                   <p className="text-xs text-blue-600 mb-1.5 sm:mb-2 md:mb-3 font-semibold truncate">
                     Batch: {item.batchCode}
                   </p>
 
                   <div className="space-y-0.5 sm:space-y-1 text-gray-700 text-xs sm:text-sm md:text-base flex-grow">
                     <p>
-                      <span className="font-semibold text-gray-800">Status:</span>{" "}
-                      <span className={`text-xs sm:text-sm font-medium px-2 py-0.5 rounded-full ${
-                        item.status === "available"
-                          ? "bg-green-100 text-green-700"
-                          : item.status === "sold"
-                          ? "bg-red-100 text-red-700"
-                          : item.status === "reserved"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}>
+                      <span className="font-semibold text-gray-800">
+                        Status:
+                      </span>{" "}
+                      <span
+                        className={`text-xs sm:text-sm font-medium px-2 py-0.5 rounded-full ${
+                          item.status === "available"
+                            ? "bg-green-100 text-green-700"
+                            : item.status === "sold"
+                            ? "bg-red-100 text-red-700"
+                            : item.status === "reserved"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
                         {item.status}
                       </span>
                     </p>
-                    
+
                     <p>
-                      <span className="font-semibold text-gray-800">Price:</span>{" "}
-                      <span className="text-blue-700 font-bold">₹{item.pricePerUnit}</span>
+                      <span className="font-semibold text-gray-800">
+                        Price:
+                      </span>{" "}
+                      <span className="text-blue-700 font-bold">
+                        ₹{item.pricePerUnit}
+                      </span>
                     </p>
-                    
+
                     <p>
                       <span className="font-semibold text-gray-800">Unit:</span>{" "}
                       {item.unit}

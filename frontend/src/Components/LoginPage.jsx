@@ -55,7 +55,7 @@
 //               type="email"
 //               value={email}
 //               onChange={(e) => setEmail(e.target.value)}
-//               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+//               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
 //               required
 //             />
 //           </div>
@@ -66,7 +66,7 @@
 //               type="password"
 //               value={password}
 //               onChange={(e) => setPassword(e.target.value)}
-//               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+//               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
 //               required
 //             />
 //           </div>
@@ -74,14 +74,14 @@
 //           <button
 //             type="submit"
 //             disabled={loading}
-//             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition disabled:bg-blue-300"
+//             className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition disabled:bg-green-300"
 //           >
 //             {loading ? "Logging in..." : "Login"}
 //           </button>
 //         </form>
 
 //         <p className="text-center text-sm text-gray-600 mt-4">
-//           Don't have an account? <Link to="/register" className="text-blue-600 underline">Register</Link>
+//           Don't have an account? <Link to="/register" className="text-green-600 underline">Register</Link>
 //         </p>
 //       </motion.div>
 //     </div>
@@ -139,7 +139,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-purple-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -148,7 +148,7 @@ export default function LoginPage() {
       >
         {/* Header with Icon */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-full mb-4 shadow-lg">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -163,7 +163,7 @@ export default function LoginPage() {
               />
             </svg>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-2">
             Welcome Back
           </h2>
           <p className="text-gray-500 text-sm">
@@ -199,13 +199,13 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Email Field */}
           <div className="group">
-            <label className="block text-gray-700 mb-2 text-sm font-semibold transition-colors group-focus-within:text-blue-600">
+            <label className="block text-gray-700 mb-2 text-sm font-semibold transition-colors group-focus-within:text-green-600">
               Email Address
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
-                  className="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+                  className="w-5 h-5 text-gray-400 group-focus-within:text-green-500 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -223,7 +223,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-3 sm:py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
+                className="w-full pl-10 pr-4 py-3 sm:py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
                 required
               />
             </div>
@@ -231,13 +231,13 @@ export default function LoginPage() {
 
           {/* Password Field */}
           <div className="group">
-            <label className="block text-gray-700 mb-2 text-sm font-semibold transition-colors group-focus-within:text-blue-600">
+            <label className="block text-gray-700 mb-2 text-sm font-semibold transition-colors group-focus-within:text-green-600">
               Password
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
-                  className="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+                  className="w-5 h-5 text-gray-400 group-focus-within:text-green-500 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -255,7 +255,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full pl-10 pr-4 py-3 sm:py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
+                className="w-full pl-10 pr-4 py-3 sm:py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
                 required
               />
             </div>
@@ -265,7 +265,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3.5 sm:py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-3.5 sm:py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none focus:outline-none focus:ring-4 focus:ring-green-300"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -309,7 +309,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-colors duration-200"
+              className="text-green-600 font-semibold hover:text-green-700 hover:underline transition-colors duration-200"
             >
               Create account
             </Link>

@@ -40,7 +40,7 @@ export default function Productlist() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-100 to-teal-50">
       {/* Header Section */}
-      <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white py-14 px-6 shadow-xl overflow-hidden">
+      <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white py-7 px-6 shadow-xl overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
@@ -52,11 +52,9 @@ export default function Productlist() {
             </div>
           </div>
           <h1 className="text-4xl md:text-5xl font-black mb-3 leading-tight">
-            My Products
+          Products
           </h1>
-          <p className="text-green-100 text-lg md:text-xl max-w-2xl">
-            Manage and track all your manufactured products with complete traceability
-          </p>
+         
         </div>
       </div>
 

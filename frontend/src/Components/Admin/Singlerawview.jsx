@@ -5,20 +5,29 @@ import axios from "axios";
 export default function Singlerawview() {
   const { batchCode } = useParams();
   console.log(batchCode);
-  
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [item, setItem] = useState(null);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
+  const openDirections = (address) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+      address
+    )}`;
+    window.open(url, "_blank");
+  };
 
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/rawmaterial/singleraw/${batchCode}`, {
-          withCredentials: true,
-        });
-        
+        const res = await axios.get(
+          `${API_URL}/api/rawmaterial/singleraw/${batchCode}`,
+          {
+            withCredentials: true,
+          }
+        );
+
         setItem(res.data.rawMaterial);
         setStatus(res.data.rawMaterial.status);
         setLoading(false);
@@ -29,21 +38,6 @@ export default function Singlerawview() {
     };
     fetchItem();
   }, [batchCode]);
-
-  const updateStatus = async () => {
-    try {
-      const res = await axios.put(
-        `${API_URL}/api/rawmaterial/update/${batchCode}`,
-        {
-          status,
-        },
-        { withCredentials: true }
-      );
-      alert(res.data.message || "Status Updated");
-    } catch (err) {
-      alert("Error updating status");
-    }
-  };
 
   const getStatusColor = (stat) => {
     const colors = {
@@ -310,18 +304,17 @@ export default function Singlerawview() {
                   {/* Google Maps Button */}
                   {item.location && (
                     <button
-                      onClick={()=>openDirections(item.location)}
+                      onClick={() => openDirections(item.location)}
                       className="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-4 rounded-lg transition-all duration-200 border border-red-200 text-sm"
                     >
                       📍 View on Google Maps
                     </button>
-                    
                   )}
                 </div>
               </div>
             )}
-                 {/* sold manufacture info */}
-            {item.manufacturer  && (
+            {/* sold manufacture info */}
+            {item.manufacturer && (
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   🚜 Buyer Info
@@ -331,7 +324,7 @@ export default function Singlerawview() {
                   {item.manufacturer.name && (
                     <div>
                       <p className="text-xs text-gray-600 uppercase font-bold mb-1">
-                         Name
+                        Name
                       </p>
                       <p className="font-semibold text-gray-900 text-sm">
                         {item.manufacturer.name}
@@ -355,11 +348,11 @@ export default function Singlerawview() {
                       className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition text-blue-600 font-medium text-sm"
                     >
                       <span>✉️</span>
-                      <span className="truncate">{item.manufacturer.email}</span>
+                      <span className="truncate">
+                        {item.manufacturer.email}
+                      </span>
                     </a>
                   )}
-
-                
                 </div>
               </div>
             )}

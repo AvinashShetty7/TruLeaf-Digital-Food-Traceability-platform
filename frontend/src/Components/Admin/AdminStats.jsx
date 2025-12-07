@@ -73,7 +73,7 @@ export default function AdminStats() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Admin Dashboard</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">statistics</h1>
           <p className="text-gray-600 mt-2">System overview and statistics</p>
         </div>
 

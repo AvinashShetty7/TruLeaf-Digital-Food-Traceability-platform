@@ -268,7 +268,7 @@ export default function TraceProduct() {
         </div>
 
         {/* PRODUCT TIMELINE */}
-        <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg p-6 md:p-8 border border-purple-100 hover:shadow-xl transition-shadow">
+        {/* <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg p-6 md:p-8 border border-purple-100 hover:shadow-xl transition-shadow">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <CheckCircle className="w-6 h-6 text-purple-600" />
             Product Timeline
@@ -277,10 +277,10 @@ export default function TraceProduct() {
           <div className="relative space-y-3 md:space-y-4 pl-4 md:pl-6 border-l-4 border-gradient-to-b from-purple-400 to-purple-600">
             {product.traceHistory.map((entry, index) => (
               <div key={index} className="relative">
-                {/* Timeline Dot */}
+                
                 <div className="absolute -left-7 md:-left-8 top-2 md:top-3 w-5 h-5 md:w-6 md:h-6 bg-purple-600 rounded-full border-4 border-white shadow-md"></div>
 
-                {/* Timeline Entry */}
+               
                 <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-4 md:p-5 border border-purple-200 hover:shadow-md transition-shadow">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
                     <p className="font-bold text-base md:text-lg text-purple-900 uppercase tracking-wide">
@@ -300,7 +300,7 @@ export default function TraceProduct() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Footer Note */}
         <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl md:rounded-3xl p-4 md:p-6 border-2 border-green-300 text-center">

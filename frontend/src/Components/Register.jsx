@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -44,11 +45,11 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-purple-50 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
       <div className="bg-white shadow-2xl rounded-2xl p-6 sm:p-8 lg:p-10 w-full max-w-md lg:max-w-lg transform transition-all duration-300 hover:shadow-3xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-full mb-4 shadow-lg">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -63,7 +64,7 @@ export default function Register() {
               />
             </svg>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+          <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-2">
             Create Account
           </h2>
           <p className="text-gray-500 text-sm">Join us to get started</p>
@@ -93,7 +94,7 @@ export default function Register() {
         <form className="space-y-5" onSubmit={handleSubmit}>
           {/* Name */}
           <div className="group">
-            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-blue-600">
+            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-green-600">
               Full Name
             </label>
             <input
@@ -103,13 +104,13 @@ export default function Register() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
+              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
             />
           </div>
 
           {/* Email */}
           <div className="group">
-            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-blue-600">
+            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-green-600">
               Email Address
             </label>
             <input
@@ -119,13 +120,13 @@ export default function Register() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
+              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
             />
           </div>
 
           {/* Phone */}
           <div className="group">
-            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-blue-600">
+            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-green-600">
               Phone Number
             </label>
             <input
@@ -134,13 +135,13 @@ export default function Register() {
               placeholder="+1 (555) 000-0000"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
+              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
             />
           </div>
 
           {/* Password */}
           <div className="group">
-            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-blue-600">
+            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-green-600">
               Password
             </label>
             <input
@@ -150,13 +151,13 @@ export default function Register() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
+              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white hover:border-gray-400"
             />
           </div>
 
           {/* Role */}
           <div className="group">
-            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-blue-600">
+            <label className="block mb-2 font-semibold text-gray-700 text-sm transition-colors group-focus-within:text-green-600">
               Select Role
             </label>
             <select
@@ -164,7 +165,7 @@ export default function Register() {
               value={formData.role}
               onChange={handleChange}
               required
-              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 cursor-pointer"
+              className="w-full p-3 sm:p-3.5 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 cursor-pointer"
             >
               <option value="">Choose your role</option>
               <option value="farmer">🌾 Farmer</option>
@@ -175,7 +176,7 @@ export default function Register() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3.5 sm:p-4 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 mt-6"
+            className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white p-3.5 sm:p-4 rounded-xl font-semibold hover:from-green-700 hover:to-teal-700 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300 mt-6"
           >
             Create Account
           </button>
@@ -187,7 +188,7 @@ export default function Register() {
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-colors duration-200"
+              className="text-green-600 font-semibold hover:text-green-700 hover:underline transition-colors duration-200"
             >
               Sign in
             </Link>

@@ -1,5 +1,6 @@
 import User from "../models/User.model.js";
 import RawMaterial from "../models/RawMaterial.model.js";
+import Product from "../models/Product.model.js"
 
 const getstatistics = async (req, res) => {
   try {

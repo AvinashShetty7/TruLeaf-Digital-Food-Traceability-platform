@@ -168,7 +168,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <section
           id="about"
-          className="relative w-full h-96 md:h-screen flex items-center overflow-hidden"
+          className="relative w-full h-122 md:h-screen flex items-center overflow-hidden"
         >
           {/* Image Slider Background */}
           <div className="absolute inset-0">
@@ -351,7 +351,7 @@ export default function HomePage() {
                   <Phone className="w-7 h-7 text-green-700" />
                 </div>
                 <h3 className="font-bold text-xl md:text-2xl mb-3 text-gray-900">Mobile</h3>
-                <p className="text-gray-600 font-semibold">+91 7975287481</p>
+                <p className="text-gray-600 font-semibold">+91 7975287489</p>
               </div>
 
               <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-gray-200 hover:shadow-xl hover:border-green-300 transition-all duration-500 group hover:-translate-y-2 text-center">
@@ -399,9 +399,7 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
           </div>
           <div className="max-w-4xl mx-auto px-4 md:px-6 text-center relative z-10 space-y-6 md:space-y-8">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
-              Join the Food Traceability Movement
-            </h2>
+           
             <p className="text-lg md:text-xl text-green-50 max-w-2xl mx-auto leading-relaxed">
               Experience transparent trust between farmers, manufacturers, and consumers.
             </p>
