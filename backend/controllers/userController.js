@@ -9,9 +9,8 @@ dotenv.config();
 
 // REGISTER CONTROLLER
 const registerUser = async (req, res) => {
-  
   try {
-    const { name, email, phone, password, role } = req.body;    
+    const { name, email, phone, password, role } = req.body;
 
     if (!name || !email || !password || !role) {
       return res
@@ -26,14 +25,13 @@ const registerUser = async (req, res) => {
         .json({ message: "User already exists with this email" });
     }
 
-
     const tempUser = await Otpmodel.create({
       email,
     });
 
     const otp = Math.floor(100000 + Math.random() * 900000);
     console.log(otp);
-    
+
     tempUser.otp = otp;
     tempUser.otpExpiry = Date.now() + 1 * 60 * 1000; // expires in 5 minutes
     await tempUser.save();
@@ -46,6 +44,8 @@ const registerUser = async (req, res) => {
         user: process.env.BREVO_EMAIL,
         pass: process.env.BREVOSMTP_API_KEY,
       },
+      logger: true, // ✅ ADD THIS
+      debug: true, // ✅ ADD THIS
     });
 
     const mailOptions = {
@@ -54,13 +54,16 @@ const registerUser = async (req, res) => {
       subject: "Your Verification OTP",
       text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
     };
-
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log("otp sent");
+    } catch (mailError) {
+      console.error("❌ MAIL ERROR:", mailError); // ✅ VERY IMPORTANT
+    }
 
     res.status(201).json({
       success: true,
-      message:
-        "✅ OTP sent to your email for verification.",
+      message: "✅ OTP sent to your email for verification.",
       user: {
         name: tempUser.name,
         email: tempUser.email,
@@ -79,9 +82,7 @@ const registerUser = async (req, res) => {
 // verify-otp CONTROLLER
 const verifyOtp = async (req, res) => {
   try {
-
-    const {  otp, email,formData} = req.body;
-    
+    const { otp, email, formData } = req.body;
 
     if (!email || !otp) {
       return res.status(400).json({ message: "Email and OTP are required" });
@@ -105,27 +106,25 @@ const verifyOtp = async (req, res) => {
         .json({ message: "OTP expired. Please resend a new one." });
     }
 
-    if ( tempuser.otp !== otp) {
+    if (tempuser.otp !== otp) {
       return res
         .status(400)
         .json({ message: "Invalid OTP. Please try again." });
     }
-    
-    const hashedPassword = await bcrypt.hash(formData.password, 10);
-       
-    const user = await User.create({
-      name:formData.name,
-      email,
-      phone:formData.phone,
-      password:hashedPassword,
-      role:formData.role,
 
+    const hashedPassword = await bcrypt.hash(formData.password, 10);
+
+    const user = await User.create({
+      name: formData.name,
+      email,
+      phone: formData.phone,
+      password: hashedPassword,
+      role: formData.role,
     });
 
     user.emailVerified = true;
     await user.save();
     await Otpmodel.deleteOne({ email });
-
 
     res.status(200).json({
       message: "✅ Email verified successfully! You can now log in.",
@@ -203,8 +202,8 @@ const resendOTP = async (req, res) => {
 //login controller
 const loginUser = async (req, res) => {
   try {
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -252,7 +251,6 @@ const loginUser = async (req, res) => {
       .json({ message: "Server error during login", error: error.message });
   }
 };
-
 
 const logoutUser = async (req, res) => {
   try {
@@ -364,7 +362,6 @@ const verifyUserByAdmin = async (req, res) => {
   }
 };
 
-
 const getAllUsers = async (req, res) => {
   try {
     // 1️⃣ Optional: restrict to admin
@@ -456,18 +453,16 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 const validLogin = async (req, res) => {
-  
   res.status(200).json({
     message: "User logged in",
-    user: req.user
+    user: req.user,
   });
 };
 
 const checkdocssubmission = async (req, res) => {
   try {
-    const user= await User.findOne({_id:req.user._id})
+    const user = await User.findOne({ _id: req.user._id })
       .select("-password ") // exclude sensitive fields
       .sort({ createdAt: -1 }); // newest first
 
@@ -484,7 +479,6 @@ const checkdocssubmission = async (req, res) => {
     });
   }
 };
-
 
 export {
   registerUser,
