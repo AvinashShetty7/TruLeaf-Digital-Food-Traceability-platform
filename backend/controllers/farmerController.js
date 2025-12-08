@@ -5,6 +5,8 @@ export const uploadKYC = async (req, res) => {
   try {
     // const userId = req.userId; // must come from auth middleware
     const userId = req.user._id;
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+    
 
     const user = await User.findById(userId);
     if (!user) return res.status(400).json({ message: "User not found" });
