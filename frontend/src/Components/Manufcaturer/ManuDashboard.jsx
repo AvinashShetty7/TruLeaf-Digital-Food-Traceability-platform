@@ -31,7 +31,7 @@ export default function DashboardLayout() {
     { label: "All Available raws", path: "/manu/Fetchallraws", icon: Leaf },
     { label: "Reserved raws", path: "/manu/Myreservedraws", icon: LifeBuoy },
     { label: "consumed raws", path: "/manu/Myconsumedraws", icon: TicketCheck },
-    { label: "Buyed raws", path: "/manu/Mybuyedraws", icon: ShoppingCart },
+    { label: "Bought raws", path: "/manu/Mybuyedraws", icon: ShoppingCart },
 
   ];
      useEffect(() => {
