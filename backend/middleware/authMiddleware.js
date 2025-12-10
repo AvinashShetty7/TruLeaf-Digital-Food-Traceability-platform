@@ -1,13 +1,10 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.model.js";
 
-/**
- * 🔐 Middleware: Verify JWT and attach user to request
- */
+
 export const checkAuth = async (req, res, next) => {
 
   try {
-    // 1️⃣ Get token from cookie (preferred)
     const token = req.cookies?.tokenid;
     console.log(token);
       

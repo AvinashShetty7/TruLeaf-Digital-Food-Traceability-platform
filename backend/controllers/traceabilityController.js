@@ -1,11 +1,7 @@
 import Trace from "../models/Trace.model.js";
 import Product from "../models/Product.model.js";
 
-/**
- * ✅ Create a trace record when a new product is made
- * Route: POST /api/trace/create
- * Access: Manufacturer only
- */
+
  const createTraceRecord = async (req, res) => {
   try {
     const { productId, message } = req.body;
