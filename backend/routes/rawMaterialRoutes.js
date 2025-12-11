@@ -15,14 +15,11 @@ import {
   getmybuyedraws,
 } from "../controllers/rawMaterialController.js";
 
-// import { authMiddleware, roleCheck } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
-// router.post("/create", addRawMaterial);  
 router.get("/myraws", getRawMaterialsByFarmer);
 
 
-// // Manufacturer/Admin view
 router.get("/allraws",getAllRawMaterials);
 router.get("/allavailableraws",getAllavailableRawMaterials);
 router.get("/singleraw/:batchCode",getSingleRawMaterial);
